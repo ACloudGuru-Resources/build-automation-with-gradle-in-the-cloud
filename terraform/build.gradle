@@ -1,13 +1,12 @@
 plugins {
-    id 'org.ysb33r.terraform'                            version '1.0.1'
-    id 'org.ysb33r.terraform.base'                       version '1.0.1'
-    id 'org.ysb33r.terraform.check'                      version '1.0.1'  
-    id 'org.ysb33r.terraform.aws'                        version '1.0.1'
-    id 'org.ysb33r.terraform.remotestate.terraformcloud' version '1.0.1'
+    id '<TERRAFORM_PLUGIN>'                            version '1.0.1'
+    id '<TERRAFORM_BASE_PLUGIN>'                       version '1.0.1'
+    id '<TERRAFORM_CHECK_PLUGIN>'                      version '1.0.1'  
+    id '<TERRAFORM_AWS_PLUGIN>'                        version '1.0.1'
 }
 
 terraformSourceSets {
   main {
-     srcDir = 'src/tf/main' 
+     srcDir = '<PATH_TO_TERRAFORM_CONFIG_DIR>' 
   }   
 }
