@@ -6,16 +6,6 @@ plugins {
     id 'org.ysb33r.terraform.remotestate.terraformcloud' version '1.0.1'
 }
 
-terraform {
-    remote {
-        terraformCloud {
-            organization  : "terraform-guru",
-            workspaceName : "gradle-n-terraform",
-            authToken         : "<TERRAFORM-CLOUD-TOKEN>"
-        }
-    }
-}
-
 terraformSourceSets {
   main {
      srcDir = 'src/tf/main' 
