@@ -9,8 +9,8 @@ repositories {
 }
 
 dependencies {
-  implementation platform('software.amazon.awssdk:bom:2.20.130')
-  implementation 'software.amazon.awssdk:s3:'
+  implementation platform('<BOM_DEPENDENCY')
+  implementation '<SDK_DEPENDENCY:MODULE:>'
 }
 
 run {
@@ -26,5 +26,5 @@ java {
 }
 
 application {
-    mainClass = 'guru_aws.CreateBucket'
+    mainClass = '<PROJECT_NAME>.CreateBucket'
 }
