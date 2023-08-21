@@ -1,60 +1,65 @@
-package my.app;
+package guru.aws;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.core.waiters.WaiterResponse;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.waiters.S3Waiter;
+import java.net.URISyntaxException;
 
-import java.util.List;
+public class CreateBucket {
 
-public class App {
+    public static void main(String[] args) throws URISyntaxException {
 
-    private static AmazonS3 s3;
+        final String usage = "\n" +
+            "Usage:\n" +
+            "    <bucketName> \n\n" +
+            "Where:\n" +
+            "    bucketName - The name of the bucket to create. The bucket name must be unique, or an error occurs.\n\n" ;
 
-    public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.format("Usage: <the bucket name> <the AWS Region to use>\n" +
-                    "Example: my-test-bucket us-east-2\n");
-            return;
-        }
+       if (args.length != 1) {
+           System.out.println(usage);
+           System.exit(1);
+       }
 
-        String bucket_name = args[0];
-        
-        s3 = AmazonS3ClientBuilder.standard()
-                .withCredentials(new ProfileCredentialsProvider())
+        String bucketName = args[0];
+        System.out.format("Creating a bucket named %s\n", bucketName);
+        ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
+        Region region = Region.US_EAST_1;
+        S3Client s3 = S3Client.builder()
+            .region(region)
+            .credentialsProvider(credentialsProvider)
+            .build();
+
+        createBucket (s3, bucketName);
+        s3.close();
+    }
+
+    public static void createBucket( S3Client s3Client, String bucketName) {
+
+        try {
+            S3Waiter s3Waiter = s3Client.waiter();
+            CreateBucketRequest bucketRequest = CreateBucketRequest.builder()
+                .bucket(bucketName)
                 .build();
 
-        // List current buckets.
-        ListMyBuckets();
+            s3Client.createBucket(bucketRequest);
+            HeadBucketRequest bucketRequestWait = HeadBucketRequest.builder()
+                .bucket(bucketName)
+                .build();
 
-        // Create the bucket.
-        if (s3.doesBucketExistV2(bucket_name)) {
-            System.out.format("\nCannot create the bucket. \n" +
-                    "A bucket named '%s' already exists.", bucket_name);
-            return;
-        } else {
-            try {
-                System.out.format("\nCreating a new bucket named '%s'...\n\n", bucket_name);
-                s3.createBucket(new CreateBucketRequest(bucket_name));
-            } catch (AmazonS3Exception e) {
-                System.err.println(e.getErrorMessage());
-            }
-        }
+            // Wait until the bucket is created and print out the response.
+            WaiterResponse<HeadBucketResponse> waiterResponse = s3Waiter.waitUntilBucketExists(bucketRequestWait);
+            waiterResponse.matched().response().ifPresent(System.out::println);
+            System.out.println(bucketName +" is ready");
 
-        // Confirm that the bucket was created.
-        ListMyBuckets();
-       
-    }
-    
-    private static void ListMyBuckets() {
-        List<Bucket> buckets = s3.listBuckets();
-        System.out.println("My buckets now are:");
-
-        for (Bucket b : buckets) {
-            System.out.println(b.getName());
+        } catch (S3Exception e) {
+            System.err.println(e.awsErrorDetails().errorMessage());
+            System.exit(1);
         }
     }
-
 }
