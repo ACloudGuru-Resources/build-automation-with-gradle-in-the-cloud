@@ -1,0 +1,23 @@
+plugins {
+    id 'org.ysb33r.terraform'                            version '1.0.1'
+    id 'org.ysb33r.terraform.base'                       version '1.0.1'
+    id 'org.ysb33r.terraform.check'                      version '1.0.1'  
+    id 'org.ysb33r.terraform.aws'                        version '1.0.1'
+    id 'org.ysb33r.terraform.remotestate.terraformcloud' version '1.0.1'
+}
+
+terraform {
+    remote {
+        terraformCloud {
+            organization  : "terraform-guru",
+            workspaceName : "gradle-n-terraform",
+            authToken         : "<TERRAFORM-CLOUD-TOKEN>"
+        }
+    }
+}
+
+terraformSourceSets {
+  main {
+     srcDir = 'src/tf/main' 
+  }   
+}
