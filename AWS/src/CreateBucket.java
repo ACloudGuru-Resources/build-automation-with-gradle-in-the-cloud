@@ -1,4 +1,4 @@
-package guru_aws;
+package <PROJECT_NAME>;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
