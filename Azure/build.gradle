@@ -12,31 +12,6 @@ dependencies {
   implementation '<SDK_DEPENDENCY:MODULE:>'
 }
 
-task createVM {
-    doLast {
-        def creds = new AzureCliCredentials()
-        def azure = Azure.configure().authenticate(creds).withDefaultSubscription()
-
-        def vmName = "myvm"
-        def resourceGroupName = "myResourceGroup"
-        def region = Region.US_WEST
-
-        def vm = azure.virtualMachines().define(vmName)
-            .withRegion(region)
-            .withNewResourceGroup(resourceGroupName)
-            .withNewPrimaryNetwork("10.0.0.0/28")
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress(vmName + "pip")
-            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-            .withRootUsername("adminUser")
-            .withSsh("sshKey")
-
-        vm.create()
-
-        println("Virtual Machine '$vmName' created")
-    }
-}
-
 java {
     toolchain {
            languageVersion = JavaLanguageVersion.of(17)
