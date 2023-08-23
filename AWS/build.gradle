@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-  implementation platform('<BOM_DEPENDENCY')
+  implementation platform('<BOM_DEPENDENCY>')
   implementation '<SDK_DEPENDENCY:MODULE:>'
 }
 
