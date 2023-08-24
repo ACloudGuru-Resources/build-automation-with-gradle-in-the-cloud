@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'war'
-    id 'com.google.cloud.tools.appengine' version '2.4.4'
+    id '<ADD_APP_ENGINE_PLUGIN>'
 }
 
 repositories {
@@ -9,13 +9,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.google.appengine:appengine-api-1.0-sdk:+'
+    implementation '<ADD_APP_ENGINE_DEPENDENCY>'
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
 sourceSets {
     main {
-        java.srcDirs = ['src/main/java/guru_gcp']
+        java.srcDirs = ['<ADD_JAVA_APP_PATH>']
     }
 }
 

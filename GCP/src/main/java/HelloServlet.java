@@ -1,4 +1,4 @@
-package guru_gcp;
+package <PROJECT_NAME>;
 
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
