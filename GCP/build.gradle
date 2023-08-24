@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'war'
-}
+    id 'com.google.cloud.tools.appengine' version '2.4.4'}
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ dependencies {
 
 sourceSets {
     main {
-        java.srcDirs = ['src/main/java']
+        java.srcDirs = ['src/main/java/guru_gcp']
     }
 }
 
@@ -27,7 +27,3 @@ appengine {
     }
 }
 
-war {
-    baseName = 'guru-gcp-app'
-    version = '1.0'
-}
