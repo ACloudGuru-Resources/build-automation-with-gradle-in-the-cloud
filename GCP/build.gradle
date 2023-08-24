@@ -1,7 +1,8 @@
 plugins {
     id 'java'
     id 'war'
-    id 'com.google.cloud.tools.appengine' version '2.4.4'}
+    id 'com.google.cloud.tools.appengine' version '2.4.4'
+}
 
 repositories {
     mavenCentral()
