@@ -8,7 +8,23 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.google.appengine:appengine-api-1.0-sdk:+'
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+}
+
+sourceSets {
+    main {
+        java.srcDirs = ['src/main/java']
+    }
+}
+
+appengine {
+    deploy {
+        stopPreviousVersion = true
+        promote = true
+        projectId = System.getenv('GOOGLE_CLOUD_PROJECT')
+        version = '1'
+    }
 }
 
 war {
