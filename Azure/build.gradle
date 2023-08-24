@@ -8,16 +8,25 @@ repositories {
 }
 
 dependencies {
-  implementation platform('<BOM_DEPENDENCY>')
-  implementation '<SDK_DEPENDENCY:MODULE:>'
+    implementation platform('<AZURE_SDK_BOM_DEPEND>')
+    implementation '<AZURE_IDENTITY_DEPEND>'
+    implementation '<AZURE_RESOURCEMANAGER_COMPUTE_DEPEND>'
+    implementation '<AZURE_RESOURCEMANAGER_NETWORK_DEPEND>'
 }
 
-java {
-    toolchain {
-           languageVersion = JavaLanguageVersion.of(17)
+task createVM(type: JavaExec) {
+    main = 'CreateLinuxVMInAzure'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task buildAndRun(dependsOn: ['build', 'createVM']) {
+    doLast {
+        exec {
+            commandLine 'java', '-cp', sourceSets.main.runtimeClasspath.asPath, 'CreateLinuxVMInAzure'
+        }
     }
 }
 
 application {
-    mainClass = '<PROJECT_NAME>.CreateBucket'
+    mainClass = '<PROJECT_NAME>.CreatorLinuxVMInAzure'
 }
